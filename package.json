@@ -1,0 +1,22 @@
+{
+  "name": "drachtio-test-fixtures",
+  "version": "0.0.1",
+  "description": "test fixtures for drachtio projects",
+  "main": "index.js",
+  "dependencies": {
+    "debug": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davehorton/drachtio-test-fixtures.git"
+  },
+  "author": "Dave Horton",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/davehorton/drachtio-test-fixtures/issues"
+  },
+  "homepage": "https://github.com/davehorton/drachtio-test-fixtures"
+}
