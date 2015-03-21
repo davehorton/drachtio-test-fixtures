@@ -28,6 +28,7 @@ exports = module.exports = function( cwd, adminPorts, sipPorts ) {
 
 		return {
 			startServers: function(done) {
+        if( 0 === params.length ) throw new Error('no servers have been configured'); 
         exec('pkill drachtio', function () {
           for( var i = 0; i < params.length; i++ ) {
             var server = spawn('drachtio', params[i].cmdLineArgs, {cwd: params[i].cwd}) ;
@@ -50,15 +51,16 @@ exports = module.exports = function( cwd, adminPorts, sipPorts ) {
       },
       connectAll: function( agents, cb ) {
         async.each( agents, function( agent, callback ) {
-          if( agent.connected ) agent.disconnect() ;
-            agent.on('connect', function(err) {
-              return callback(err) ;
-            }) ;
+          //if( agent.connected ) agent.disconnect() ;
+          agent.on('connect', function(err) {
+            debug('connectAll: agent connected: ', agent.socket.address()) ;
+            return callback(err) ;
+          }) ;
         }, function(err) {
             if( err ) return cb(err) ;
             cb() ;
         }) ;
-    },
+      }.bind(this),
       client: clients,
       sipServer: sipServers
 		} ;

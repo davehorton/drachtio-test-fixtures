@@ -18,6 +18,7 @@ module.exports =  {
         'a=rtpmap:101 telephone-event/8000\n' + 
         'a=fmtp:101 0-15\n' + 
         'a=sendrecv\n', 
-        apiLog: '/tmp/api_0.txt'
+        apiLog: '/tmp/api_0.txt',
+        label: 'config0'
 
 } ;
