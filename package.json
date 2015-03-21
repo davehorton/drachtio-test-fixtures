@@ -4,7 +4,8 @@
   "description": "test fixtures for drachtio projects",
   "main": "index.js",
   "dependencies": {
-    "debug": "*"
+    "debug": "*",
+    "async": "~0.9.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

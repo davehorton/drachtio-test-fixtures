@@ -1,5 +1,7 @@
 var spawn = require('child_process').spawn ;
 var exec = require('child_process').exec ;
+var fs = require('fs') ;
+var async = require('async') ;
 var debug = require('debug')('drachtio:fixtures') ;
 
 exports = module.exports = function( cwd, adminPorts, sipPorts ) {
@@ -40,6 +42,23 @@ exports = module.exports = function( cwd, adminPorts, sipPorts ) {
 				}) ;
 				done() ;
 			},
+      configureUac: function( config, Agent ) {
+        var uac = new Agent(function(req,res){}) ;
+        uac.set('api logger',fs.createWriteStream(config.apiLog) ) ;
+        uac.connect(config.connect_opts) ;
+        return uac ;
+      },
+      connectAll: function( agents, cb ) {
+        async.each( agents, function( agent, callback ) {
+          if( agent.connected ) agent.disconnect() ;
+            agent.on('connect', function(err) {
+              return callback(err) ;
+            }) ;
+        }, function(err) {
+            if( err ) return cb(err) ;
+            cb() ;
+        }) ;
+    },
       client: clients,
       sipServer: sipServers
 		} ;
