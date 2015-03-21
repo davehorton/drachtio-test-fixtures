@@ -19,7 +19,7 @@
     <logging>
 
         <file>
-            <name>/tmp/drachtio_local_log_%5N.log</name>
+            <name>/tmp/drachtio_3_log_%5N.log</name>
             <archive>/tmp</archive>
             <size>5</size>
             <auto-flush>true</auto-flush>

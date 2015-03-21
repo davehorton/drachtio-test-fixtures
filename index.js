@@ -1,31 +1,47 @@
 var spawn = require('child_process').spawn ;
 var exec = require('child_process').exec ;
 var debug = require('debug')('drachtio:fixtures') ;
-var path = require('path') ;
 
-var localServer ;
-var remoteServer ;
+exports = module.exports = function( cwd, adminPorts, sipPorts ) {
+	if( !( adminPorts instanceof Array ) ) throw new Error('parameter expected to be an array: ', adminPorts);
+	if( !( sipPorts instanceof Array ) ) throw new Error('parameter expected to be an array: ', sipPorts);
+	if( adminPorts.length !== sipPorts.length ) throw new Error('must have equal number of adminPorts and sipPorts') ;
 
-exports = module.exports = {
-	localConfig: require('./fixtures/localConfig'),
-	remoteConfig: require('./fixtures/remoteConfig'),
-	beforeTest: function(done, cwd) {
-	    exec('pkill drachtio', function () {
-	    	var myLocalPath = path.join(__dirname, 'fixtures', 'drachtio.conf.local.xml') ;
-	    	var myRemotePath = path.join(__dirname, 'fixtures', 'drachtio.conf.remote.xml') ;
-	    	debug('starting servers, cwd will be: %s, local config: %s, remote config: %s', cwd, myLocalPath, myRemotePath) ;
-	        localServer = spawn('drachtio',['-f', myLocalPath],{cwd: cwd }) ;
-	        remoteServer = spawn('drachtio',['-f', myRemotePath],{cwd: cwd }) ;
-	        done() ;
-	     }) ;
-	}, 
-	afterTest: function(done) {
-	    this.timeout(1000) ;
-	    setTimeout( function() {
-	        localServer.kill() ;
-	        remoteServer.kill() ;
-	        done() ;
-	    }, 450) ;
-	}
+	return function() {
+		var servers = [] ;
+		var params = [] ;
+    var clients = [] ;
+    var sipServers = [] ;
+
+		for( var i = 0; i < adminPorts.length; i++ ) {
+			params.push({
+				cmdLineArgs: ['-f',__dirname + '/fixtures/drachtio.conf' + i + '.xml','-p', adminPorts[i],'-c','sip:127.0.0.1:' + sipPorts[i]],
+				cwd: cwd
+			}) ;
+      var client = require(__dirname + '/fixtures/config' + i + '.js') ;
+      client.connect_opts.port = adminPorts[i] ;
+      clients.push( client ) ;
+      sipServers.push( 'sip:127.0.0.1:' + sipPorts[i] ) ;
+		}
+
+		return {
+			startServers: function(done) {
+        exec('pkill drachtio', function () {
+          for( var i = 0; i < params.length; i++ ) {
+            var server = spawn('drachtio', params[i].cmdLineArgs, {cwd: params[i].cwd}) ;
+            servers.push( server ) ;
+          }
+        	done() ;
+        }) ;
+			},
+			stopServers: function(done) {
+				servers.forEach(function(server){
+					server.kill() ;
+				}) ;
+				done() ;
+			},
+      client: clients,
+      sipServer: sipServers
+		} ;
+	}() ;
 } ;
-
