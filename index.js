@@ -51,9 +51,7 @@ exports = module.exports = function( cwd, adminPorts, sipPorts ) {
       },
       connectAll: function( agents, cb ) {
         async.each( agents, function( agent, callback ) {
-          //if( agent.connected ) agent.disconnect() ;
           agent.on('connect', function(err) {
-            debug('connectAll: agent connected: ', agent.socket.address()) ;
             return callback(err) ;
           }) ;
         }, function(err) {
