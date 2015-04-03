@@ -34,7 +34,9 @@ exports = module.exports = function( cwd, adminPorts, sipPorts ) {
             var server = spawn('drachtio', params[i].cmdLineArgs, {cwd: params[i].cwd}) ;
             servers.push( server ) ;
           }
-        	done() ;
+          setTimeout( function() {
+            done() ;
+          }, 200) ;
         }) ;
 			},
 			stopServers: function(done) {
