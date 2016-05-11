@@ -1,6 +1,6 @@
 {
   "name": "drachtio-test-fixtures",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "test fixtures for drachtio projects",
   "main": "index.js",
   "dependencies": {
