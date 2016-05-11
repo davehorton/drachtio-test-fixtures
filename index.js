@@ -17,7 +17,8 @@ exports = module.exports = function( cwd, adminPorts, sipPorts ) {
 
 		for( var i = 0; i < adminPorts.length; i++ ) {
 			params.push({
-				cmdLineArgs: ['-f',__dirname + '/fixtures/drachtio.conf' + i + '.xml','-p', adminPorts[i],'-c','sip:127.0.0.1:' + sipPorts[i]],
+				cmdLineArgs: ['-f',__dirname + '/fixtures/drachtio.conf' + i + '.xml','-p', 
+          adminPorts[i],'-c','sip:127.0.0.1:' + sipPorts[i]] + ':transport=udp',
 				cwd: cwd
 			}) ;
       var client = require(__dirname + '/fixtures/config' + i + '.js') ;
