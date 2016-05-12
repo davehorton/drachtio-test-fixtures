@@ -1,10 +1,9 @@
 {
   "name": "drachtio-test-fixtures",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "test fixtures for drachtio projects",
   "main": "index.js",
   "dependencies": {
-    "drachtio-client": "davehorton/drachtio-client.git",
     "debug": "*",
     "async": "~0.9.0"
   },
